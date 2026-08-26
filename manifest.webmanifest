@@ -5,5 +5,13 @@
   "display": "standalone",
   "background_color": "#f4f7fb",
   "theme_color": "#1f4fa8",
-  "description": "Carefree Caravaneers member rally intentions and expenses"
+  "description": "Carefree Caravaneers member rally intentions and expenses",
+  "icons": [
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
 }
