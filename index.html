@@ -48,6 +48,8 @@ let token=''; let data=null;
 function fmt(s){if(!s)return'';const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d).toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'})}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function attr(s){return esc(s).replace(/\n/g,'&#10;')}
+function firstName(s){return String(s||'').trim().split(/\s+/)[0]||''}
+function greetingName(member){const p1=firstName(member.person1_name),p2=firstName(member.person2_name);if(p1&&p2)return p1+' & '+p2;if(p1)return p1;return member.display_name||'Member'}
 function todayYmd(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function daysTo(s){if(!s)return null;const a=new Date(todayYmd()+'T00:00:00'),b=new Date(s+'T00:00:00');return Math.round((b-a)/86400000)}
 async function api(method='GET',body=null){const r=await fetch(API,{method,headers:{'Content-Type':'application/json','x-member-token':token},body:body?JSON.stringify(body):null});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||'Request failed');return j}
@@ -66,7 +68,7 @@ function render(){
   const actions=[];
   upcoming.forEach(r=>{const d=daysTo(r.response_deadline);if(!r.response)actions.push(esc(r.name)+' — response required'+(d!==null?' by '+fmt(r.response_deadline):''));else if(r.response==='MAYBE'&&d!==null&&d<=3)actions.push(esc(r.name)+' — please make a final decision')});
   expense.forEach(r=>{if(!r.expense_submitted_at)actions.push(esc(r.name)+' — expenses required')});
-  let h='<div class="card welcome"><strong>Welcome '+esc(member.person1_name||member.display_name||'Member')+'</strong><div class="muted">Please keep your own rally choices up to date.</div></div>';
+  let h='<div class="card welcome"><strong>Hello '+esc(greetingName(member))+'</strong><div class="muted">Please keep your own rally choices up to date.</div></div>';
   h+='<div class="attention"><strong>'+(actions.length?actions.length+' item(s) need your attention':'✓ You are up to date')+'</strong>'+(actions.length?'<ul>'+actions.map(x=>'<li>'+x+'</li>').join('')+'</ul>':'')+'</div>';
   h+='<h2>Upcoming rallies</h2>';
   if(!upcoming.length)h+='<div class="notice">No upcoming rallies are currently listed.</div>';
