@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1f4fa8">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Carefree Rallies">
+<title>Carefree Rally App – iPhone Setup</title>
+<style>body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:#f4f7fb;color:#222}header{background:#1f4fa8;color:#fff;padding:18px}main{max-width:700px;margin:auto;padding:16px}.card{background:#fff;border:1px solid #dde4ec;border-radius:14px;padding:18px;box-shadow:0 3px 12px #0000000b}.ok{color:#176b34;font-weight:800}.bad{color:#8a1c1c;font-weight:800}li{margin:10px 0;line-height:1.4}</style>
+</head>
+<body><header><h2 style="margin:0">🚐 Carefree Rally App</h2></header><main><div class="card" id="box">Preparing iPhone setup…</div></main>
+<script>
+(function(){
+ const u=new URL(location.href);
+ let t=u.searchParams.get('t')||localStorage.getItem('carefree_member_token')||'';
+ const box=document.getElementById('box');
+ if(!t){box.innerHTML='<div class="bad">Personal member setup not found.</div><p>First open your personal Carefree Rally link in Safari so your rallies are showing, then return to this setup page.</p>';return;}
+ localStorage.setItem('carefree_member_token',t);
+ if(!u.searchParams.get('t')){
+   u.searchParams.set('t',t);
+   history.replaceState({},'',u.pathname+'?t='+encodeURIComponent(t));
+ }
+ const standalone=window.navigator.standalone===true||window.matchMedia('(display-mode: standalone)').matches;
+ if(standalone){
+   location.replace('index.html?t='+encodeURIComponent(t));
+   return;
+ }
+ box.innerHTML='<div class="ok">✓ This iPhone is ready to install.</div><p>Keep this page open and:</p><ol><li>Tap the <strong>3 dots</strong> at the bottom.</li><li>Tap <strong>Share</strong>.</li><li>Tap <strong>Add to Home Screen</strong>.</li><li>Make sure <strong>Open as Web App</strong> is ON, then tap <strong>Add</strong>.</li><li>Open the new <strong>Carefree Rally App</strong> icon.</li></ol><p><strong>Do not copy or paste a personal link.</strong></p>';
+})();
+</script></body></html>
